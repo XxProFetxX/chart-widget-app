@@ -5,4 +5,5 @@ export interface ChartConfig {
   dataSource: string;
   labelType?: LabelType;
   refreshInterval?: number;
+  chartType?: 'line' | 'bar' | 'pie';
 }

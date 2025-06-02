@@ -5,21 +5,16 @@
         {{ config.title }}
       </h2>
     </div>
-    <!-- <div class="bar-chart-container">
-      <Bar :data="chartData" :options="options" />
-    </div> -->
-    <div class="bar-chart-container mt-6">
-      <Line :data="chartData" :options="options" />
+
+    <div class="bar-chart-container">
+      <component class="mt-6" :is="chartComponent" :data="chartData" :options="options" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, toRef } from 'vue';
-import {
-  // Bar,
-  Line,
-} from 'vue-chartjs';
+import { Bar, Line } from 'vue-chartjs';
 import {
   Chart as ChartJS,
   Title,
@@ -54,6 +49,15 @@ const chartData = computed(() => ({
     },
   ],
 }));
+
+const chartComponent = computed(() => {
+  switch (props.config.chartType) {
+    case 'line':
+      return Line;
+    case 'bar':
+      return Bar;
+  }
+});
 
 const options = {
   responsive: true,
