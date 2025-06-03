@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-100">
     <nav class="flex justify-between items-center p-4 bg-white shadow relative">
-      <h1 class="font-bold text-xl">Chart Widgets App</h1>
+      <h1 class="font-bold text-xl">Widgets App</h1>
 
       <div class="hidden md:flex space-x-4">
         <button @click="goTo('Crypto')" class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition">

@@ -1,15 +1,15 @@
-import { onMounted, ref, reactive, watch } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import * as d3 from 'd3';
-import type { GraphConfig, GraphNode, GraphLink } from '../domain/GraphConfig';
+import type { GraphConfig } from '../domain/GraphConfig';
+import type { GraphNode } from '../domain/GraphNode';
+import type { GraphLink } from '../domain/GraphLink';
 
 export function useGraphWidget(initialConfig: GraphConfig) {
   const svgRef = ref<SVGSVGElement | null>(null);
 
-  // Estado reactivo para nodos y links que se puedan cambiar
   const nodes = reactive<GraphNode[]>([...initialConfig.nodes]);
   const links = reactive<GraphLink[]>([...initialConfig.links]);
 
-  // Nodo seleccionado para eliminar o para enlazar
   const selectedNode = ref<GraphNode | null>(null);
 
   onMounted(() => {
@@ -45,7 +45,6 @@ export function useGraphWidget(initialConfig: GraphConfig) {
         .force('charge', d3.forceManyBody().strength(-300))
         .force('center', d3.forceCenter(width / 2, height / 2));
 
-      // LINKS
       const link = svg
         .append('g')
         .attr('stroke', '#999')
@@ -62,15 +61,18 @@ export function useGraphWidget(initialConfig: GraphConfig) {
         .attr('stroke-width', 2)
         .on('click', (event, d) => {
           event.stopPropagation();
-          // Aquí podrías agregar lógica para eliminar links si quieres
-          const index = links.indexOf(d);
+
+          const sourceId = typeof d.source === 'object' ? d.source.id : d.source;
+          const targetId = typeof d.target === 'object' ? d.target.id : d.target;
+
+          const index = links.findIndex(l => l.source === sourceId && l.target === targetId);
+
           if (index > -1) {
             links.splice(index, 1);
             restartSimulation();
           }
         });
 
-      // NODOS
       const node = svg
         .append('g')
         .attr('stroke', '#fff')
@@ -84,16 +86,13 @@ export function useGraphWidget(initialConfig: GraphConfig) {
         .on('click', (event, d) => {
           event.stopPropagation();
 
-          // Si no hay nodo seleccionado, seleccionamos este
           if (!selectedNode.value) {
             selectedNode.value = d;
             d3.select(event.currentTarget).attr('stroke', 'black').attr('stroke-width', 3);
           } else if (selectedNode.value === d) {
-            // Deseleccionar si clickeas dos veces en el mismo nodo
             selectedNode.value = null;
             d3.select(event.currentTarget).attr('stroke', '#fff').attr('stroke-width', 1.5);
           } else {
-            // Ya hay un nodo seleccionado, creamos un link si no existe
             const source = selectedNode.value;
             const target = d;
 
@@ -105,9 +104,7 @@ export function useGraphWidget(initialConfig: GraphConfig) {
               links.push({ source: source.id, target: target.id });
             }
 
-            // Limpiar selección
             selectedNode.value = null;
-            // Reiniciar simulación para reflejar cambios
             restartSimulation();
           }
         })
@@ -130,7 +127,6 @@ export function useGraphWidget(initialConfig: GraphConfig) {
             })
         );
 
-      // LABELS
       const label = svg
         .append('g')
         .selectAll('text')
@@ -154,10 +150,8 @@ export function useGraphWidget(initialConfig: GraphConfig) {
       });
     }
 
-    // Inicializar simulación
     restartSimulation();
 
-    // Agregar nodo nuevo donde se haga click en el SVG
     svg.on('click', event => {
       const [x, y] = d3.pointer(event);
       const newNodeId = `Nodo${nodes.length + 1}`;
