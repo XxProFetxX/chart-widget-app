@@ -32,7 +32,13 @@ export function useGraphWidget(initialConfig: GraphConfig) {
         .force(
           'link',
           d3
-            .forceLink(links)
+            .forceLink(
+              links.map(l => ({
+                ...l,
+                source: nodes.find(n => n.id === l.source),
+                target: nodes.find(n => n.id === l.target),
+              }))
+            )
             .id((d: any) => d.id)
             .distance(100)
         )
@@ -45,7 +51,13 @@ export function useGraphWidget(initialConfig: GraphConfig) {
         .attr('stroke', '#999')
         .attr('stroke-opacity', 0.6)
         .selectAll('line')
-        .data(links)
+        .data(
+          links.map(l => ({
+            ...l,
+            source: nodes.find(n => n.id === l.source),
+            target: nodes.find(n => n.id === l.target),
+          }))
+        )
         .join('line')
         .attr('stroke-width', 2)
         .on('click', (event, d) => {
@@ -86,7 +98,8 @@ export function useGraphWidget(initialConfig: GraphConfig) {
             const target = d;
 
             const exists = links.some(
-              l => (l.source === source.id && l.target === target.id) || (l.source === target.id && l.target === source.id)
+              l =>
+                (l.source === source.id && l.target === target.id) || (l.source === target.id && l.target === source.id)
             );
             if (!exists) {
               links.push({ source: source.id, target: target.id });
@@ -145,7 +158,7 @@ export function useGraphWidget(initialConfig: GraphConfig) {
     restartSimulation();
 
     // Agregar nodo nuevo donde se haga click en el SVG
-    svg.on('click', (event) => {
+    svg.on('click', event => {
       const [x, y] = d3.pointer(event);
       const newNodeId = `Nodo${nodes.length + 1}`;
 
