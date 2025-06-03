@@ -6,8 +6,8 @@
       </h2>
     </div>
 
-    <div class="bar-chart-container">
-      <component class="mt-6" :is="chartComponent" :data="chartData" :options="options" />
+    <div class="relative w-full h-[400px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px]">
+      <component class="absolute inset-0" :is="chartComponent" :data="chartData" :options="options" />
     </div>
   </div>
 </template>
@@ -59,14 +59,41 @@ const chartComponent = computed(() => {
   }
 });
 
-const options = {
+const options = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
-};
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: props.config.xAxisLabel || 'Tiempo',
+      },
+      ticks: {
+        maxRotation: 60,
+        minRotation: 30,
+        autoSkip: true,
+        // maxTicksLimit: 6,
+      },
+    },
+    y: {
+      title: {
+        display: true,
+        text: props.config.yAxisLabel || 'Valor',
+      },
+    },
+  },
+}));
 </script>
 
 <style scoped>
 .bar-chart-container {
+  position: relative;
+  width: 100%;
   height: 700px;
 }
 </style>

@@ -6,4 +6,6 @@ export interface ChartConfig {
   labelType?: LabelType;
   refreshInterval?: number;
   chartType?: 'line' | 'bar' | 'pie';
+  yAxisLabel?: string;
+  xAxisLabel?: string;
 }

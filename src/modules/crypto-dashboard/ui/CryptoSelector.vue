@@ -1,25 +1,32 @@
 <template>
-  <aside class="w-40 bg-white shadow rounded-md p-4 overflow-y-auto">
-    <div class="mb-2 font-bold text-sm text-gray-700">Criptomonedas</div>
+  <div class="w-full relative">
+    <input
+      v-model="searchTerm"
+      type="text"
+      placeholder="Buscar criptomoneda..."
+      class="w-full border rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
 
-    <ul>
+    <!-- Solo mostrar lista si hay término de búsqueda y resultados -->
+    <ul
+      v-if="searchTerm.length > 0 && filteredCoins.length"
+      class="absolute z-10 mt-1 max-h-60 overflow-y-auto bg-white border border-gray-300 rounded shadow text-sm w-full"
+    >
       <li
         v-for="coin in filteredCoins"
         :key="coin.id"
-        :class="[
-          'cursor-pointer px-2 py-1 rounded hover:bg-gray-100 text-sm',
-          modelValue === coin.id ? 'bg-gray-200 font-semibold' : '',
-        ]"
-        @click="$emit('update:modelValue', coin.id)"
+        @click="selectCoin(coin.id)"
+        class="px-2 py-1 hover:bg-gray-100 cursor-pointer"
+        :class="{ 'bg-gray-200 font-semibold': modelValue === coin.id }"
       >
-        {{ coin.name }}
+        {{ coin.name }} ({{ coin.symbol.toUpperCase() }})
       </li>
     </ul>
-  </aside>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import type { CryptoOption } from '../domain/CryptoOption';
 import { fetchCryptoList } from '../infrastructure/fetchCryptoList';
 
@@ -32,19 +39,34 @@ const emit = defineEmits<{
 }>();
 
 const coins = ref<CryptoOption[]>([]);
-const filteredCoins = ref<CryptoOption[]>([]);
+const searchTerm = ref('');
 
-const commonCoinIds = ['bitcoin', 'ethereum', 'solana', 'dogecoin', 'cardano', 'ripple', 'litecoin'];
+const filteredCoins = ref<CryptoOption[]>([]);
 
 const loadCoins = async () => {
   try {
-    const allCoins = await fetchCryptoList();
-    filteredCoins.value = allCoins.filter(c => commonCoinIds.includes(c.id));
-    coins.value = allCoins;
-  } catch (error) {
-    console.error('Error al cargar criptomonedas:', error);
+    const data = await fetchCryptoList();
+    coins.value = data;
+    filteredCoins.value = data.slice(0, 50); // mostrar los primeros 50 por defecto
+  } catch (err) {
+    console.error('Error al cargar criptomonedas:', err);
   }
 };
+
+const filterCoins = () => {
+  const term = searchTerm.value.toLowerCase();
+  filteredCoins.value = coins.value.filter(
+    c => c.name.toLowerCase().includes(term) || c.symbol.toLowerCase().includes(term)
+  );
+};
+
+const selectCoin = (id: string) => {
+  emit('update:modelValue', id);
+  searchTerm.value = ''; // opcional: limpiar input al seleccionar
+  filteredCoins.value = []; // cerrar lista
+};
+
+watch(searchTerm, filterCoins);
 
 onMounted(loadCoins);
 </script>
