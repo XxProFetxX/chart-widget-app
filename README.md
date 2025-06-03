@@ -2,11 +2,15 @@
 
 Aplicación web construida con **Vue 3**, **TypeScript** y **Vite** que permite visualizar gráficos de criptomonedas en tiempo real y manipular redes de nodos interactivas.
 
+Este proyecto fue desarrollado como parte de una prueba técnica para Aynitech, enfocada en la visualización de datos y la creación de widgets interactivos y reutilizables usando Chart.js y D3.js.
+
 ## Características
 
 - **Gráficos de criptomonedas**: Consulta precios históricos y en tiempo real de criptomonedas usando la API de CoinGecko, con selección de moneda, rango de fechas y tipo de gráfico (barra o línea).
 - **Red de nodos interactiva**: Visualiza y manipula grafos usando D3.js, permitiendo agregar nodos, enlazarlos, arrastrarlos y eliminar enlaces.
-- **UI moderna**: Estilizado con TailwindCSS para una experiencia responsiva y atractiva.
+- **Interactividad**: Los widgets responden a eventos del usuario (selección de opciones, cambio de fechas, etc.) y actualizan los datos en tiempo real.
+- **Reutilizables y parametrizables**: Los componentes de gráficos y red pueden ser reutilizados con diferentes configuraciones.
+- **UI moderna y responsiva**: Estilizado con TailwindCSS para una experiencia atractiva en cualquier dispositivo.
 - **Arquitectura modular**: Separación clara por módulos (`chart-widget`, `crypto-dashboard`, `graph-widget`, `node-network`).
 
 ## Requisitos previos
@@ -41,10 +45,10 @@ Aplicación web construida con **Vue 3**, **TypeScript** y **Vite** que permite 
 
 ## Decisiones de arquitectura y stack
 
-- **Vue 3 + TypeScript**: Permite una estructura de componentes moderna, tipado estricto y mejor mantenibilidad.
-- **Vite**: Proporciona recarga rápida y configuración sencilla para proyectos Vue modernos.
+- **Vue 3 + TypeScript**: Elegido por su estructura de componentes moderna, tipado estricto y facilidad de mantenimiento.
+- **Vite**: Permite recarga rápida y configuración sencilla para proyectos Vue modernos.
 - **TailwindCSS**: Facilita el diseño responsivo y la personalización rápida de estilos.
-- **Chart.js + vue-chartjs**: Para gráficos rápidos y personalizables.
+- **Chart.js + vue-chartjs**: Para gráficos rápidos, interactivos y personalizables.
 - **D3.js**: Para manipulación avanzada de SVG y simulaciones de fuerza en grafos.
 - **Pinia**: Preparado para gestión de estado global si el proyecto crece.
 - **Arquitectura modular**: Cada funcionalidad principal está separada en módulos bajo `src/modules`, facilitando la escalabilidad y el mantenimiento.
@@ -71,4 +75,4 @@ src/
 
 ---
 
-Desarrollado por [tu nombre o equipo].
+Desarrollado por Breydi Tenorio para el proceso de selección de Aynitech.
