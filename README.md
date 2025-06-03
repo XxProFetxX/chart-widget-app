@@ -77,6 +77,7 @@ src/
 
 - El proyecto está preparado para ampliarse fácilmente con nuevos widgets o dashboards.
 - Se recomienda usar [VSCode](https://code.visualstudio.com/) con la extensión [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) para mejor experiencia con Vue + TypeScript.
+- **Importante:** Si realizas muchas interacciones seguidas con el gráfico de criptomonedas, es posible que la API gratuita de CoinGecko devuelva un error 429 (Too Many Requests). Si esto ocurre, los datos dejarán de actualizarse temporalmente, pero la funcionalidad se restablecerá automáticamente después de unos minutos.
 
 ---
 
