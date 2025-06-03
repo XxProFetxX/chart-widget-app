@@ -33,7 +33,7 @@ import type { ChartType } from '../../chart-widget/domain/ChartType';
 
 const selectedRange = ref<DateRangeKey>('1H');
 const selectedCoinId = ref('bitcoin');
-const selectedChartType = ref<ChartType>('bar');
+const selectedChartType = ref<ChartType>('line');
 const selectedCurrency = ref('usd');
 
 const cryptoChartConfig = computed<ChartConfig>(() => {

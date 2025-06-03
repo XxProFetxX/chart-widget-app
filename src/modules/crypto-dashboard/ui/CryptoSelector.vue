@@ -4,7 +4,7 @@
       v-model="searchTerm"
       type="text"
       placeholder="Buscar criptomoneda..."
-      class="w-full border rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
 
     <!-- Solo mostrar lista si hay término de búsqueda y resultados -->
@@ -16,7 +16,7 @@
         v-for="coin in filteredCoins"
         :key="coin.id"
         @click="selectCoin(coin.id)"
-        class="px-2 py-1 hover:bg-gray-100 cursor-pointer"
+        class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
         :class="{ 'bg-gray-200 font-semibold': modelValue === coin.id }"
       >
         {{ coin.name }} ({{ coin.symbol.toUpperCase() }})

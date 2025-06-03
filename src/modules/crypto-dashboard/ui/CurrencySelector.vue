@@ -1,5 +1,5 @@
 <template>
-  <select v-model="model" class="border rounded px-2 py-1 text-sm">
+  <select v-model="model" class="border rounded px-3 py-2 text-sm">
     <option v-for="currency in currencies" :key="currency" :value="currency">
       {{ currency.toUpperCase() }}
     </option>
