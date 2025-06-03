@@ -37,6 +37,11 @@ Este proyecto fue desarrollado como parte de una prueba técnica para Aynitech, 
 
 4. Accede a [http://localhost:5173](http://localhost:5173) (o el puerto que indique Vite).
 
+### Demo en línea
+
+Puedes probar la aplicación desplegada aquí:  
+👉 [https://chart-widget-app.vercel.app/](https://chart-widget-app.vercel.app/)
+
 ## Scripts disponibles
 
 - `npm run dev`: Inicia el servidor de desarrollo.
